@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    let timeout;
+    function debouncedPopulateDiv(){
+        clearTimeout(timeout);
+        timeout=setTimeout(()=>{
+            populateDiv();
+        },1000);
+        
+    }
+    async function populateDiv(){
+        const a=document.getElementById("firstNum").value;
+        const b=document.getElementById("secondNum").value;
+        const initAns=await fetch("https://sum-server.100xdevs.com/sum?a="+ a + "&b=" + b);
+        const finalAns=await initAns.json();
+        const element=document.getElementById("finalSum");
+        element.innerHTML=finalAns;
+        // element.innerHTML=parseInt(a)+parseInt(b);
+    }
+    async function calculateInterest(){
+        const p=document.getElementById("principal").value;
+        const r=document.getElementById("rate").value;
+        const t=document.getElementById("time").value;
+        const initAns=await fetch("https://sum-server.100xdevs.com/interest?principal="+ p + 
+        "&rate=" + r + "&time=" + t );
+        const finalAns=await initAns.text();
+        const element=document.getElementById("pIntrest");
+        element.innerHTML=finalAns;
+    }
+</script>
+<body>
+    <input oninput="debouncedPopulateDiv()" id="firstNum" type="text" placeholder="First Number">
+    <br>
+    <br>
+    <input oninput="debouncedPopulateDiv()" id="secondNum" type="text" placeholder="Second Number">
+    <br>
+    <br>
+    <button onclick="debouncedPopulateDiv()">Calculate Sum</button>
+    <div id="finalSum"></div>
+    <br>
+    <br>
+    <input oninput="" id="principal" type="text" placeholder="Principal">
+    <br>
+    <br>
+    <input oninput="" id="rate" type="text" placeholder="Rate">
+    <br>
+    <br>
+    <input oninput="" id="time" type="text" placeholder="Interest">
+    <br>
+    <br>
+    <button onclick="calculateInterest()">Calculate Simple Interest</button>
+    <div id="pIntrest"></div>
+</body>
+</html>
